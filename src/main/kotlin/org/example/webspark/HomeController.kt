@@ -5,11 +5,16 @@ import org.example.webspark.models.HomeSystem
 import spark.Request
 import spark.Response
 
-class HomeController {
-
-    val homeSystem = HomeSystem.getInstance()
+class HomeController (private val homeSystem: HomeSystem) {
 
     fun list(request: Request, response: Response): String {
+        val toggleLights = request.queryParams("action")
+
+        when(toggleLights) {
+            "toggle_on" -> homeSystem.toggleLights(true)
+            "toggle_off" -> homeSystem.toggleLights(false)
+        }
+
         return Template.render(
             "home.html",
             hashMapOf(

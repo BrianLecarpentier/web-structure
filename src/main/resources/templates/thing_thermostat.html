@@ -1,0 +1,46 @@
+#parse("base.html")
+#@mainLayout()
+<h1>Thermostat Detail</h1>
+<div>
+    <a href="/">
+        Retour au menu
+    </a>
+    <table>
+        <thead>
+        <tr>
+            <th>Action</th>
+            <th>Type</th>
+            <th>Name</th>
+            <th>State</th>
+            <th>Temperature</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                #if ($thing.getState().name() == "REACHABLE")
+                <form action="/things/$thingId" method="get">
+                    <input type="hidden" name="action" value="set_temperature">
+                    <label> New Temperature : <input type="text" name="value">
+                    </label>
+                    <input type="submit" value="Submit">
+                </form>
+                #else
+                <form action="/things/$thingId" method="get">
+                    <label> New Temperature : <input placeholder="Sensor Unreachable" type="text" name="value" disabled>
+                    </label>
+                    <input type="submit" value="Submit">
+                </form>
+                #end
+            </td>
+            <td>$thing.getTypeName()</td>
+            <td>$thing.getName()</td>
+            <td>$thing.getState().name()</td>
+            <td>$thing.getCurrentTemp()</td>
+        </tr>
+        <tr>
+        </tr>
+        </tbody>
+    </table>
+</div>
+#end

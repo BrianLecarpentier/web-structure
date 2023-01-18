@@ -2,8 +2,9 @@ package org.example.webspark.models
 
 import org.example.webspark.interfaces.LightObserverInterface
 
-class HomeSystem private constructor() : LightObserverInterface {
-    companion object {
+class HomeSystem : LightObserverInterface {
+    /** Singleton */
+    /*companion object {
         private lateinit var instance: HomeSystem
         fun getInstance(): HomeSystem {
             if (!this::instance.isInitialized) {
@@ -12,14 +13,16 @@ class HomeSystem private constructor() : LightObserverInterface {
 
             return instance
         }
-    }
+    }*/
 
     var thingsList: MutableList<Thing> = mutableListOf()
-    var logs: MutableList<String> = mutableListOf()
+    var systemStatus: Boolean = true
+    private var logs: MutableList<String> = mutableListOf()
+
     fun getLights(): List<Light> = thingsList.filterIsInstance<Light>()
 
-    val sensors: List<Sensor>
-        get() = thingsList.filterIsInstance<Sensor>()
+    val thermostats: List<Thermostat>
+        get() = thingsList.filterIsInstance<Thermostat>()
 
     fun createLight(state: Thing.State, isLighOn: Boolean, name: String) {
         val newLight = Light()
@@ -28,16 +31,23 @@ class HomeSystem private constructor() : LightObserverInterface {
         newLight.state = state
         newLight.lightChange = this
 
-        this.thingsList.add(newLight)
+        thingsList.add(newLight)
     }
 
-    fun createSensor(state: Thing.State, isEnabled: Boolean, name: String) {
-        val newSensor = Sensor()
-        newSensor.name = name
-        newSensor.isEnabled = isEnabled
-        newSensor.state = state
+    fun createThermostat(state: Thing.State, name: String) {
+        val newThermostat = Thermostat()
+        newThermostat.name = name
+        newThermostat.state = state
 
-        this.thingsList.add(newSensor)
+        thingsList.add(newThermostat)
+    }
+
+    fun toggleLights(lightsStatus: Boolean) {
+        val lights: List<Light> = getLights()
+
+        if (systemStatus) {
+            lights.map { light: Light -> light.isLightOn = lightsStatus }
+        }
     }
 
     override fun onLighChange(light: Light) {

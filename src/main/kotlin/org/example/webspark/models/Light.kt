@@ -7,10 +7,17 @@ class Light : Thing(){
     var lightChange: LightObserverInterface? = null
 
     var isLightOn: Boolean = false
+        set(value) {
+            if(state == State.REACHABLE) {
+                field = value
+            }
+        }
 
     fun toggleLight() {
-        this.isLightOn = !isLightOn
-        lightChange?.onLighChange(this)
+        if(state == State.REACHABLE) {
+            isLightOn = !isLightOn
+            lightChange?.onLighChange(this)
+        }
     }
 
     override fun getTypeName(): String = "Light"

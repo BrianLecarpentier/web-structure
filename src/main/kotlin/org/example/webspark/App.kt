@@ -12,18 +12,19 @@ import spark.Spark.*
 fun main() {
     initialize()
 
-    val homeSystem = HomeSystem.getInstance()
+    val homeSystem = HomeSystem()
 
     homeSystem.createLight(Thing.State.UNREACHABLE, false, "Light 1")
-    homeSystem.createLight(Thing.State.REACHABLE, true, "Light 2")
-    homeSystem.createLight(Thing.State.REACHABLE, true, "Light 3")
-    homeSystem.createSensor(Thing.State.REACHABLE, true, "Sensor 1")
+    homeSystem.createLight(Thing.State.REACHABLE, false, "Light 2")
+    homeSystem.createLight(Thing.State.REACHABLE, false, "Light 3")
+    homeSystem.createThermostat(Thing.State.REACHABLE, "Sensor 1")
+    homeSystem.createThermostat(Thing.State.UNREACHABLE, "Sensor 2")
 
     val allLights: List<Light> = homeSystem.getLights()
-    val allSensors: List<Sensor> = homeSystem.sensors
+    val allThermostats: List<Thermostat> = homeSystem.thermostats
 
-    val home = HomeController()
-    val thingDetail = ThingDetailsController()
+    val home = HomeController(homeSystem)
+    val thingDetail = ThingDetailsController(homeSystem)
 
     get(
         "/",

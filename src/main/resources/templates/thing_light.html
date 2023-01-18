@@ -2,6 +2,9 @@
 #@mainLayout()
 <h1>Light Detail</h1>
 <div>
+    <a href="/">
+        Retour au menu
+    </a>
     <table>
         <thead>
         <tr>
@@ -15,18 +18,18 @@
         <tbody>
         <tr>
             <td>
-                <a href="/things/$lightId?action=toggle">
-                    #if ($light.isLightOn())
+                <a href="/things/$thingId?action=toggle">
+                    #if ($thing.isLightOn())
                     Toggle Off
                     #else
                     Toggle On
                     #end
                 </a>
             </td>
-            <td>$light.getTypeName()</td>
-            <td>$light.getName()</td>
-            <td>$light.getState().name()</td>
-            <td>$light.isLightOn()</td>
+            <td>$thing.getTypeName()</td>
+            <td>$thing.getName()</td>
+            <td>$thing.getState().name()</td>
+            <td>$thing.isLightOn()</td>
         </tr>
         <tr>
         </tr>

@@ -4,30 +4,43 @@ import org.example.webspark.core.Template
 import org.example.webspark.interfaces.LightObserverInterface
 import org.example.webspark.models.HomeSystem
 import org.example.webspark.models.Light
+import org.example.webspark.models.Thermostat
+import org.example.webspark.models.Thing
 import spark.Request
 import spark.Response
 
-class ThingDetailsController() {
+class ThingDetailsController(private val homeSystem: HomeSystem) {
+
+    private lateinit var thingTypeUrl: String
+    private lateinit var currentThing: Thing
 
     fun detail(request: Request, response: Response): String {
 
-        val homeSystem = HomeSystem.getInstance()
+        val id: Int = request.params(":id").toInt()
+        val action: String = request.queryParamOrDefault("action", "")
+        val tmpValue: String = request.queryParamOrDefault("value", "")
 
-        val id = request.params(":id").toInt()
-        val toggle = request.queryParams("action")
-        val currentThing = homeSystem.thingsList[id - 1] as Light
+        when (homeSystem.thingsList[id - 1].getTypeName()) {
+            "Light" -> {
+                thingTypeUrl = "thing_light.html"
+                currentThing = homeSystem.thingsList[id - 1] as Light
+            }
+            "Thermostat" -> {
+                thingTypeUrl = "thing_thermostat.html"
+                currentThing = homeSystem.thingsList[id - 1] as Thermostat
+            }
+        }
 
-        val thingType = homeSystem.thingsList[id - 1].getTypeName()
-
-        if (toggle == "toggle") {
-            currentThing.toggleLight()
+        when (action) {
+            "toggle" ->  (currentThing as Light).toggleLight()
+            "set_temperature" -> (currentThing as Thermostat).currentTemp = tmpValue.toFloat()
         }
 
         return Template.render(
-            "thing_light.html",
+            thingTypeUrl,
             hashMapOf(
-                "light" to currentThing,
-                "lightId" to id
+                "thing" to currentThing,
+                "thingId" to id
             ),
         )
     }
