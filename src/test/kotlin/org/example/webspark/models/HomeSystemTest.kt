@@ -1,13 +1,18 @@
 package org.example.webspark.models
 
+import org.example.webspark.interfaces.LoggerInterface
+import org.mockito.ArgumentMatchers.anyString
+import org.mockito.Mockito
+import org.mockito.kotlin.mock
 import kotlin.test.*
 
 class HomeSystemTest {
     private lateinit var homeSystem: HomeSystem
+    private val logger = mock<LoggerInterface>()
 
     @BeforeTest
     fun before(){
-        homeSystem = HomeSystem()
+        homeSystem = HomeSystem(logger)
     }
 
     @Test
@@ -84,5 +89,16 @@ class HomeSystemTest {
         for (light in lights) {
             assertFalse(light.isLightOn)
         }
+    }
+
+    @Test
+    fun `log is add when light state changed`() {
+        val light = Light()
+
+        light.lightChange = homeSystem
+
+        light.toggleLight()
+
+        Mockito.verify(logger).addLog(anyString())
     }
 }

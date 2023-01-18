@@ -14,5 +14,5 @@ class Thermostat: Thing() {
     private val maxTemp: Float = 100F
     
     override fun getTypeName(): String = "Thermostat"
-    override fun getDescription(): String = "Thermostat name-$name, reachable=$state, max = $maxTemp, min = $minTemp, current = $currentTemp"
+    override fun getDescription(): String = "Thermostat name-$name, reachable=$state, max = $maxTemp°C, min = $minTemp°C, current = $currentTemp°C"
 }

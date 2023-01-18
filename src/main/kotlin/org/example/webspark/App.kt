@@ -12,7 +12,8 @@ import spark.Spark.*
 fun main() {
     initialize()
 
-    val homeSystem = HomeSystem()
+    val logger = Logger()
+    val homeSystem = HomeSystem(logger)
 
     homeSystem.createLight(Thing.State.UNREACHABLE, false, "Light 1")
     homeSystem.createLight(Thing.State.REACHABLE, false, "Light 2")

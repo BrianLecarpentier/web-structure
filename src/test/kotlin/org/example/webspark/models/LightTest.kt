@@ -1,6 +1,9 @@
 package org.example.webspark.models
 
+import org.example.webspark.interfaces.LightObserverInterface
 import org.junit.jupiter.api.Assertions.*
+import org.mockito.Mockito
+import org.mockito.kotlin.mock
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
@@ -62,5 +65,15 @@ class LightTest {
         //Assert
         assertFalse(light.isLightOn)
         assertEquals(Thing.State.UNREACHABLE, light.state)
+    }
+
+    @Test
+    fun `set light triggers listener`(){
+        val fakeListener = mock<LightObserverInterface>()
+        light.lightChange = fakeListener
+
+        light.toggleLight()
+
+        Mockito.verify(fakeListener).onLighChange(light)
     }
 }

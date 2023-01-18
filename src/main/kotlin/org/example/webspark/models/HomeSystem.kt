@@ -1,8 +1,9 @@
 package org.example.webspark.models
 
 import org.example.webspark.interfaces.LightObserverInterface
+import org.example.webspark.interfaces.LoggerInterface
 
-class HomeSystem : LightObserverInterface {
+class HomeSystem (private val logger: LoggerInterface) : LightObserverInterface {
     /** Singleton */
     /*companion object {
         private lateinit var instance: HomeSystem
@@ -17,7 +18,6 @@ class HomeSystem : LightObserverInterface {
 
     var thingsList: MutableList<Thing> = mutableListOf()
     var systemStatus: Boolean = true
-    private var logs: MutableList<String> = mutableListOf()
 
     fun getLights(): List<Light> = thingsList.filterIsInstance<Light>()
 
@@ -51,7 +51,6 @@ class HomeSystem : LightObserverInterface {
     }
 
     override fun onLighChange(light: Light) {
-        logs.add("Light ${light.name} is ${light.isLightOn}")
-        println(logs.last())
+        logger.addLog("Light ${light.name} is ${light.isLightOn}")
     }
 }
