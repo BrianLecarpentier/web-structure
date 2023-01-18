@@ -1,0 +1,36 @@
+#parse("base.html")
+#@mainLayout()
+<h1>Light Detail</h1>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>Action</th>
+            <th>Type</th>
+            <th>Name</th>
+            <th>State</th>
+            <th>IsLight</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <a href="/things/$lightId?action=toggle">
+                    #if ($light.isLightOn())
+                    Toggle Off
+                    #else
+                    Toggle On
+                    #end
+                </a>
+            </td>
+            <td>$light.getTypeName()</td>
+            <td>$light.getName()</td>
+            <td>$light.getState().name()</td>
+            <td>$light.isLightOn()</td>
+        </tr>
+        <tr>
+        </tr>
+        </tbody>
+    </table>
+</div>
+#end
